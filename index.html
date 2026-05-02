@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>กำลังโหลด...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      font-family: 'Sarabun', sans-serif;
+      color: #fff;
+      text-align: center;
+    }
+
+    .container {
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .spinner {
+      width: 70px;
+      height: 70px;
+      border: 8px solid rgba(255,255,255,0.3);
+      border-top: 8px solid #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    h2 {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  </style>
+
+  <script>
+    // หน่วง 1.5 วินาทีแล้วค่อยเด้ง
+    setTimeout(function() {
+      window.location.href = "https://script.google.com/macros/s/AKfycbyHEo7S4OFRSpy5EQi7Om0Y9rnn6WpS6nPfPoXdx-dbcORJ3WP1jPzw9F-GPsBOXvaFgA/exec?page=register";
+    }, 1500);
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="spinner"></div>
+    <h2>กำลังโหลดระบบ...</h2>
+    <p>กรุณารอสักครู่</p>
+    <p>หากไม่ไปอัตโนมัติ 
+      <a href="https://script.google.com/macros/s/AKfycbyHEo7S4OFRSpy5EQi7Om0Y9rnn6WpS6nPfPoXdx-dbcORJ3WP1jPzw9F-GPsBOXvaFgA/exec?page=register">
+        คลิกที่นี่
+      </a>
+    </p>
+  </div>
+</body>
+</html>
