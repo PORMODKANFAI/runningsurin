@@ -6,31 +6,30 @@
 <title>กำลังโหลด...</title>
 
 <style>
-body {
+body{
   margin:0;
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background: linear-gradient(135deg,#4facfe,#00f2fe);
-  font-family: 'Sarabun', sans-serif;
+  background:linear-gradient(135deg,#4facfe,#00f2fe);
+  font-family:'Sarabun',sans-serif;
   color:#fff;
   text-align:center;
 }
 
-.container { animation: fadeIn 1s ease; }
+.container{animation:fadeIn 1s ease;}
 
-.spinner {
-  width:70px;
-  height:70px;
+.spinner{
+  width:70px;height:70px;
   border:8px solid rgba(255,255,255,0.3);
   border-top:8px solid #fff;
   border-radius:50%;
-  animation: spin 1s linear infinite;
+  animation:spin 1s linear infinite;
   margin:0 auto 20px;
 }
 
-.btn {
+.btn{
   display:none;
   margin-top:20px;
   padding:12px 20px;
@@ -41,33 +40,57 @@ body {
   font-weight:bold;
 }
 
-@keyframes spin {
+.tip{
+  display:none;
+  margin-top:15px;
+  font-size:14px;
+  line-height:1.6;
+}
+
+@keyframes spin{
   0%{transform:rotate(0)}
   100%{transform:rotate(360deg)}
 }
 
-@keyframes fadeIn {
+@keyframes fadeIn{
   from{opacity:0;transform:translateY(10px)}
   to{opacity:1;transform:translateY(0)}
 }
 </style>
 
 <script>
-const targetURL = "https://script.google.com/macros/s/AKfycbyHEo7S4OFRSpy5EQi7Om0Y9rnn6WpS6nPfPoXdx-dbcORJ3WP1jPzw9F-GPsBOXvaFgA/exec?page=register";
+const url = "https://script.google.com/macros/s/AKfycbyHEo7S4OFRSpy5EQi7Om0Y9rnn6WpS6nPfPoXdx-dbcORJ3WP1jPzw9F-GPsBOXvaFgA/exec?page=register";
 
-function isLineBrowser() {
+function isLine() {
   return navigator.userAgent.includes("Line");
 }
 
-window.onload = function() {
-  if (isLineBrowser()) {
-    // ถ้าเป็น LINE → แสดงปุ่มแทน
-    document.getElementById("openBtn").style.display = "inline-block";
-  } else {
-    // ถ้าไม่ใช่ → เด้งอัตโนมัติ
-    setTimeout(() => {
-      window.location.href = targetURL;
-    }, 1200);
+function isAndroid() {
+  return /Android/i.test(navigator.userAgent);
+}
+
+function isIOS() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+window.onload = function(){
+
+  if(isLine()){
+    
+    // ===== เปิดผ่าน LINE =====
+    if(isAndroid()){
+      document.getElementById("btnChrome").style.display = "inline-block";
+    }
+
+    if(isIOS()){
+      document.getElementById("tipIOS").style.display = "block";
+    }
+
+  }else{
+    // ===== Browser ปกติ =====
+    setTimeout(()=>{
+      window.location.href = url;
+    },1200);
   }
 }
 </script>
@@ -80,13 +103,20 @@ window.onload = function() {
   <h2>กำลังโหลดระบบ...</h2>
   <p>กรุณารอสักครู่</p>
 
-  <a id="openBtn" class="btn" href="intent://script.google.com/macros/s/AKfycbyHEo7S4OFRSpy5EQi7Om0Y9rnn6WpS6nPfPoXdx-dbcORJ3WP1jPzw9F-GPsBOXvaFgA/exec?page=register#Intent;scheme=https;package=com.android.chrome;end;">
-    👉 เปิดใน Google Chrome
+  <!-- Android -->
+  <a id="btnChrome" class="btn"
+     href="intent://script.google.com/macros/s/AKfycbyHEo7S4OFRSpy5EQi7Om0Y9rnn6WpS6nPfPoXdx-dbcORJ3WP1jPzw9F-GPsBOXvaFgA/exec?page=register#Intent;scheme=https;package=com.android.chrome;end;">
+     👉 เปิดใน Google Chrome
   </a>
 
-  <p style="margin-top:15px;font-size:13px;">
-    (หากเปิดใน LINE แล้วมีปัญหา กรุณากดปุ่มด้านบน)
-  </p>
+  <!-- iPhone -->
+  <div id="tipIOS" class="tip">
+    📱 เปิดผ่าน LINE อาจใช้งานไม่ได้<br><br>
+    👉 กดปุ่ม “•••” มุมขวาบน<br>
+    👉 เลือก “เปิดใน Safari”<br><br>
+    แล้วระบบจะใช้งานได้ปกติ
+  </div>
+
 </div>
 </body>
 </html>
