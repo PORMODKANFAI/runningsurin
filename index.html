@@ -3,120 +3,1413 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>กำลังโหลด...</title>
-
+<title>คู่มือการใช้งาน — ระบบนิเทศการจัดการเรียนการสอน v.2</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Prompt:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(135deg,#4facfe,#00f2fe);
-  font-family:'Sarabun',sans-serif;
-  color:#fff;
-  text-align:center;
+:root {
+  --ink:      #0D0B1E;
+  --ink2:     #2D2A4A;
+  --muted:    #6B6894;
+  --rule:     #E8E5F5;
+  --bg:       #F7F6FC;
+  --white:    #FFFFFF;
+  --violet:   #5B3FD4;
+  --violet2:  #7C5CE8;
+  --indigo:   #3730A3;
+  --amber:    #D97706;
+  --emerald:  #059669;
+  --rose:     #DC2626;
+  --sky:      #0284C7;
+  --pill-h:   44px;
+  --r:        14px;
+  --sidebar:  280px;
 }
 
-.container{animation:fadeIn 1s ease;}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.spinner{
-  width:70px;height:70px;
-  border:8px solid rgba(255,255,255,0.3);
-  border-top:8px solid #fff;
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-  margin:0 auto 20px;
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Sarabun', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  display: flex;
+  min-height: 100vh;
 }
 
-.btn{
-  display:none;
-  margin-top:20px;
-  padding:12px 20px;
-  background:#fff;
-  color:#333;
-  border-radius:30px;
-  text-decoration:none;
-  font-weight:bold;
+/* ── SIDEBAR ── */
+#sidebar {
+  width: var(--sidebar);
+  min-height: 100vh;
+  background: var(--ink);
+  position: fixed;
+  top: 0; left: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
 }
 
-.tip{
-  display:none;
-  margin-top:15px;
-  font-size:14px;
-  line-height:1.6;
+.sidebar-glow {
+  position: absolute;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(91,63,212,.4) 0%, transparent 70%);
+  top: -80px; left: -80px;
+  pointer-events: none;
 }
 
-@keyframes spin{
-  0%{transform:rotate(0)}
-  100%{transform:rotate(360deg)}
+.sidebar-brand {
+  padding: 28px 24px 20px;
+  position: relative;
+  z-index: 1;
 }
 
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(91,63,212,.3);
+  border: 1px solid rgba(91,63,212,.5);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #C4B5FD;
+  letter-spacing: .5px;
+  margin-bottom: 12px;
+}
+
+.brand-dot {
+  width: 6px; height: 6px;
+  background: #A78BFA;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+
+.brand-title {
+  font-family: 'Prompt', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.brand-sub {
+  font-size: 11.5px;
+  color: #7C7A9E;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+  margin: 0 20px 8px;
+}
+
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #4A4870;
+  text-transform: uppercase;
+  padding: 10px 24px 6px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px 10px 24px;
+  color: #8B88B5;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  border-radius: 0;
+  transition: all .18s;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.nav-link:hover { color: #C4B5FD; background: rgba(91,63,212,.12); }
+
+.nav-link.active {
+  color: #fff;
+  background: linear-gradient(90deg, rgba(91,63,212,.35), transparent);
+}
+
+.nav-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 4px; bottom: 4px;
+  width: 3px;
+  background: linear-gradient(180deg, #A78BFA, #7C5CE8);
+  border-radius: 0 3px 3px 0;
+}
+
+.nav-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,.05);
+  transition: background .18s;
+}
+
+.nav-link.active .nav-icon {
+  background: rgba(91,63,212,.5);
+}
+
+.nav-num {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  color: #4A4870;
+  background: rgba(255,255,255,.05);
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+.nav-link.active .nav-num { color: #A78BFA; background: rgba(91,63,212,.3); }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255,255,255,.05);
+  font-size: 11.5px;
+  color: #3D3B5A;
+}
+
+/* ── MAIN ── */
+#main {
+  margin-left: var(--sidebar);
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+#topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(247,246,252,.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 40px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.topbar-title {
+  font-family: 'Prompt', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.version-chip {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--violet);
+  background: rgba(91,63,212,.1);
+  border: 1px solid rgba(91,63,212,.2);
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .3px;
+}
+
+.menu-toggle {
+  display: none;
+  width: 36px; height: 36px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  border-radius: 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+/* ── CONTENT ── */
+#content {
+  padding: 40px;
+  flex: 1;
+  max-width: 860px;
+}
+
+/* ── SECTIONS ── */
+.section {
+  display: none;
+  animation: fadeUp .3s ease forwards;
+}
+
+.section.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--ink) 0%, #1A1640 50%, #0F0D2E 100%);
+  border-radius: 20px;
+  padding: 44px 44px 36px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(91,63,212,.35) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(16,185,129,.15) 0%, transparent 60%);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(91,63,212,.3);
+  border: 1px solid rgba(167,139,250,.3);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #C4B5FD;
+  letter-spacing: .5px;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  font-family: 'Prompt', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.25;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero p {
+  font-size: 15px;
+  color: #9896C4;
+  max-width: 480px;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-stat {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.hero-stat .num {
+  font-family: 'Prompt', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #A78BFA;
+}
+
+.hero-stat .lbl {
+  font-size: 11.5px;
+  color: #6B699A;
+  margin-top: 2px;
+}
+
+/* ── PAGE HEADING ── */
+.page-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.heading-icon {
+  width: 46px; height: 46px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.page-heading h2 {
+  font-family: 'Prompt', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.page-heading p {
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+/* ── STEPS ── */
+.steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 28px; }
+
+.step {
+  display: flex;
+  gap: 0;
+  position: relative;
+}
+
+.step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  bottom: 0;
+  width: 1px;
+  background: var(--rule);
+}
+
+.step-bubble {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: #fff;
+  font-family: 'Prompt', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 0 4px rgba(91,63,212,.12);
+}
+
+.step-body {
+  padding: 0 0 24px 18px;
+  flex: 1;
+}
+
+.step-title {
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--ink);
+  margin-bottom: 5px;
+}
+
+.step-desc {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+.callout.tip    { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+.callout.warn   { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
+.callout.info   { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; }
+.callout.success{ background: #F0FDF4; border: 1px solid #BBF7D0; color: #065F46; }
+
+/* ── FEATURE GRID ── */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.feature-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  transition: box-shadow .2s, transform .2s;
+}
+
+.feature-card:hover {
+  box-shadow: 0 8px 30px rgba(91,63,212,.1);
+  transform: translateY(-2px);
+}
+
+.feature-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.feature-card h4 {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 5px;
+}
+
+.feature-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── SCORE TABLE ── */
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  font-size: 13.5px;
+}
+
+.score-table th {
+  background: var(--ink);
+  color: #fff;
+  padding: 11px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: .3px;
+}
+
+.score-table th:first-child { border-radius: 10px 0 0 0; }
+.score-table th:last-child  { border-radius: 0 10px 0 0; }
+
+.score-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+  color: var(--ink2);
+}
+
+.score-table tr:last-child td { border-bottom: none; }
+.score-table tr:nth-child(even) td { background: #FAFAFF; }
+.score-table tr:hover td { background: #F0EEFF; }
+
+.score-pill-sm {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ── QUALITY BANDS ── */
+.quality-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.q-card {
+  border-radius: 12px;
+  padding: 16px 18px;
+  border: 1px solid;
+}
+
+.q-card .q-level { font-weight: 800; font-size: 16px; margin-bottom: 3px; }
+.q-card .q-range { font-size: 12px; opacity: .85; }
+.q-card .q-desc  { font-size: 12.5px; margin-top: 6px; }
+
+.q-excellent { background: #F0FDF4; border-color: #BBF7D0; color: #065F46; }
+.q-good      { background: #EFF6FF; border-color: #BFDBFE; color: #1E40AF; }
+.q-fair      { background: #FEFCE8; border-color: #FDE68A; color: #92400E; }
+.q-poor      { background: #FEF2F2; border-color: #FECACA; color: #991B1B; }
+
+/* ── MENU CARDS ── */
+.menu-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 14px 18px;
+  transition: all .18s;
+}
+
+.menu-item:hover {
+  border-color: rgba(91,63,212,.25);
+  background: #FAFAFF;
+}
+
+.menu-badge {
+  width: 40px; height: 40px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.menu-item-title { font-weight: 700; font-size: 13.5px; color: var(--ink); }
+.menu-item-desc  { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+.menu-arrow { margin-left: auto; color: var(--rule); font-size: 18px; }
+
+/* ── FAQ ── */
+.faq-list { display: flex; flex-direction: column; gap: 10px; }
+
+.faq-item {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.faq-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Sarabun', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: left;
+  transition: background .15s;
+}
+
+.faq-q:hover { background: #FAFAFF; }
+.faq-q.open  { background: #F5F3FF; color: var(--violet); }
+
+.faq-chevron {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: transform .2s, background .2s;
+}
+
+.faq-q.open .faq-chevron {
+  transform: rotate(180deg);
+  background: rgba(91,63,212,.15);
+  color: var(--violet);
+}
+
+.faq-a {
+  display: none;
+  padding: 0 18px 15px;
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.7;
+  border-top: 1px solid var(--rule);
+}
+
+.faq-a.open { display: block; }
+
+.faq-a ul { padding-left: 18px; margin-top: 6px; }
+.faq-a li { margin-bottom: 4px; }
+
+/* ── INLINE TAG ── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ── SECTION DIVIDER ── */
+.s-divider {
+  height: 1px;
+  background: var(--rule);
+  margin: 28px 0;
+}
+
+/* ── MOBILE ── */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+
+@media (max-width: 900px) {
+  :root { --sidebar: 260px; }
+  #main { margin-left: 0; }
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); }
+  .overlay.show { display: block; }
+  .menu-toggle { display: flex; }
+  #content { padding: 24px 20px 40px; }
+  #topbar { padding: 0 20px; }
+  .hero { padding: 28px 24px; }
+  .hero h1 { font-size: 22px; }
+  .hero-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .quality-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 520px) {
+  .hero-grid { grid-template-columns: 1fr 1fr; }
+  .quality-grid { grid-template-columns: 1fr; }
+}
+
+/* ── PRINT ── */
+@media print {
+  #sidebar, #topbar { display: none !important; }
+  #main { margin-left: 0; }
+  .section { display: block !important; page-break-after: always; }
 }
 </style>
-
-<script>
-const url = "https://script.google.com/macros/s/AKfycbyHEo7S4OFRSpy5EQi7Om0Y9rnn6WpS6nPfPoXdx-dbcORJ3WP1jPzw9F-GPsBOXvaFgA/exec?page=register";
-
-function isLine() {
-  return navigator.userAgent.includes("Line");
-}
-
-function isAndroid() {
-  return /Android/i.test(navigator.userAgent);
-}
-
-function isIOS() {
-  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
-window.onload = function(){
-
-  if(isLine()){
-    
-    // ===== เปิดผ่าน LINE =====
-    if(isAndroid()){
-      document.getElementById("btnChrome").style.display = "inline-block";
-    }
-
-    if(isIOS()){
-      document.getElementById("tipIOS").style.display = "block";
-    }
-
-  }else{
-    // ===== Browser ปกติ =====
-    setTimeout(()=>{
-      window.location.href = url;
-    },1200);
-  }
-}
-</script>
-
 </head>
-
 <body>
-<div class="container">
-  <div class="spinner"></div>
-  <h2>กำลังโหลดระบบ...</h2>
-  <p>กรุณารอสักครู่</p>
 
-  <!-- Android -->
-  <a id="btnChrome" class="btn"
-     href="intent://script.google.com/macros/s/AKfycbyHEo7S4OFRSpy5EQi7Om0Y9rnn6WpS6nPfPoXdx-dbcORJ3WP1jPzw9F-GPsBOXvaFgA/exec?page=register#Intent;scheme=https;package=com.android.chrome;end;">
-     👉 เปิดใน Google Chrome
-  </a>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-  <!-- iPhone -->
-  <div id="tipIOS" class="tip">
-    📱 เปิดผ่าน LINE อาจใช้งานไม่ได้<br><br>
-    👉 กดปุ่ม “•••” มุมขวาบน<br>
-    👉 เลือก “เปิดใน Safari”<br><br>
-    แล้วระบบจะใช้งานได้ปกติ
+<!-- ═══ SIDEBAR ═══ -->
+<aside id="sidebar">
+  <div class="sidebar-glow"></div>
+
+  <div class="sidebar-brand">
+    <div class="brand-badge"><div class="brand-dot"></div> v.2.0</div>
+    <div class="brand-title">ระบบนิเทศการจัดการเรียนการสอน</div>
+    <div class="brand-sub">คู่มือการใช้งานสำหรับบุคลากร</div>
   </div>
 
-</div>
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section-label">เริ่มต้น</div>
+  <button class="nav-link active" onclick="show('home')">
+    <span class="nav-icon">🏠</span> ภาพรวมระบบ
+    <span class="nav-num">01</span>
+  </button>
+
+  <div class="sidebar-section-label" style="margin-top:8px;">เมนูหลัก</div>
+  <button class="nav-link" onclick="show('record')">
+    <span class="nav-icon">📋</span> บันทึกการนิเทศ
+    <span class="nav-num">02</span>
+  </button>
+  <button class="nav-link" onclick="show('data')">
+    <span class="nav-icon">📊</span> ดูข้อมูลนิเทศ
+    <span class="nav-num">03</span>
+  </button>
+  <button class="nav-link" onclick="show('detail')">
+    <span class="nav-icon">🔍</span> รายละเอียดรายบุคคล
+    <span class="nav-num">04</span>
+  </button>
+  <button class="nav-link" onclick="show('compare')">
+    <span class="nav-icon">⚖️</span> เปรียบเทียบ
+    <span class="nav-num">05</span>
+  </button>
+  <button class="nav-link" onclick="show('summary')">
+    <span class="nav-icon">📈</span> สรุปภาพรวม
+    <span class="nav-num">06</span>
+  </button>
+  <button class="nav-link" onclick="show('print')">
+    <span class="nav-icon">🖨️</span> พิมพ์รายงาน
+    <span class="nav-num">07</span>
+  </button>
+
+  <div class="sidebar-section-label" style="margin-top:8px;">ช่วยเหลือ</div>
+  <button class="nav-link" onclick="show('faq')">
+    <span class="nav-icon">❓</span> คำถามที่พบบ่อย
+    <span class="nav-num">08</span>
+  </button>
+
+  <div class="sidebar-footer">
+    พัฒนาด้วย Google Apps Script<br>
+    สงวนลิขสิทธิ์ © 2568
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<div id="main">
+
+  <header id="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="menu-toggle" onclick="openSidebar()">☰</button>
+      <span class="topbar-title" id="topbar-label">ภาพรวมระบบ</span>
+    </div>
+    <div class="topbar-right">
+      <span class="version-chip">v.2.0</span>
+    </div>
+  </header>
+
+  <div id="content">
+
+    <!-- ══ 01 HOME ══ -->
+    <section id="sec-home" class="section active">
+
+      <div class="hero">
+        <div class="hero-badge">📘 คู่มือการใช้งาน</div>
+        <h1>ระบบนิเทศการจัดการ<br>เรียนการสอน</h1>
+        <p>ระบบบันทึก ติดตาม และวิเคราะห์ผลการนิเทศการสอน สำหรับบุคลากรโรงเรียน สังกัด สพป. พัฒนาบน Google Apps Script</p>
+        <div class="hero-grid">
+          <div class="hero-stat"><div class="num">16</div><div class="lbl">ข้อประเมิน</div></div>
+          <div class="hero-stat"><div class="num">5</div><div class="lbl">ด้านหลัก</div></div>
+          <div class="hero-stat"><div class="num">3</div><div class="lbl">รูปภาพ/ครั้ง</div></div>
+        </div>
+      </div>
+
+      <div class="page-heading">
+        <div class="heading-icon" style="background:#EEF2FF;">🎯</div>
+        <div>
+          <h2>คุณสมบัติหลักของระบบ</h2>
+          <p>สิ่งที่ระบบนี้ทำได้ทั้งหมด</p>
+        </div>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#EEF2FF;">📝</div>
+          <h4>บันทึกนิเทศออนไลน์</h4>
+          <p>กรอกแบบประเมิน 16 ข้อผ่านเว็บ บันทึกลง Google Sheets แบบ Real-time</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#FFF7ED;">📸</div>
+          <h4>แนบรูปภาพอัตโนมัติ</h4>
+          <p>อัพโหลดรูปภาพสูงสุด 3 รูปต่อครั้ง ไปยัง Google Drive โดยอัตโนมัติ</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#F0FDF4;">📊</div>
+          <h4>กราฟวิเคราะห์ผล</h4>
+          <p>Bar Chart, Donut Chart และ Radar Chart วิเคราะห์รายบุคคลและภาพรวม</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#EFF6FF;">🖨️</div>
+          <h4>พิมพ์รายงาน PDF</h4>
+          <p>สร้างรายงานพร้อมรูปภาพ ลงนามผู้นิเทศ พิมพ์หรือบันทึก PDF ได้ทันที</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#F5F3FF;">⚖️</div>
+          <h4>เปรียบเทียบพัฒนาการ</h4>
+          <p>เปรียบเทียบครั้งที่ 1 vs ครั้งที่ 2 ของครูแต่ละคนด้วย Radar Chart</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#FEF2F2;">📱</div>
+          <h4>รองรับมือถือ</h4>
+          <p>Responsive Design ใช้งานได้ทั้งคอมพิวเตอร์ แท็บเล็ต และสมาร์ทโฟน</p>
+        </div>
+      </div>
+
+      <div class="page-heading">
+        <div class="heading-icon" style="background:#F0FDF4;">🗂️</div>
+        <div>
+          <h2>เมนูทั้งหมดในระบบ</h2>
+          <p>คลิกที่เมนูในแถบด้านซ้ายเพื่ออ่านรายละเอียด</p>
+        </div>
+      </div>
+
+      <div class="menu-list">
+        <div class="menu-item" style="cursor:pointer;" onclick="show('record')">
+          <div class="menu-badge" style="background:#EEF2FF;">📋</div>
+          <div><div class="menu-item-title">บันทึกการนิเทศ</div><div class="menu-item-desc">กรอกแบบบันทึก ประเมินผล และแนบรูปภาพ</div></div>
+          <div class="menu-arrow">›</div>
+        </div>
+        <div class="menu-item" style="cursor:pointer;" onclick="show('data')">
+          <div class="menu-badge" style="background:#FFF7ED;">📊</div>
+          <div><div class="menu-item-title">ข้อมูลการนิเทศ</div><div class="menu-item-desc">ดูรายการทั้งหมด ค้นหา กรอง และส่งออก CSV</div></div>
+          <div class="menu-arrow">›</div>
+        </div>
+        <div class="menu-item" style="cursor:pointer;" onclick="show('detail')">
+          <div class="menu-badge" style="background:#FEF2F2;">🔍</div>
+          <div><div class="menu-item-title">รายละเอียดรายบุคคล</div><div class="menu-item-desc">กราฟวิเคราะห์รายบุคคล พร้อมพิมพ์รายงาน</div></div>
+          <div class="menu-arrow">›</div>
+        </div>
+        <div class="menu-item" style="cursor:pointer;" onclick="show('compare')">
+          <div class="menu-badge" style="background:#F5F3FF;">⚖️</div>
+          <div><div class="menu-item-title">เปรียบเทียบ</div><div class="menu-item-desc">Radar Chart เปรียบเทียบ 2 ชุดข้อมูล</div></div>
+          <div class="menu-arrow">›</div>
+        </div>
+        <div class="menu-item" style="cursor:pointer;" onclick="show('summary')">
+          <div class="menu-badge" style="background:#ECFEFF;">📈</div>
+          <div><div class="menu-item-title">สรุปภาพรวม</div><div class="menu-item-desc">กราฟภาพรวม แยกตามด้าน ผู้นิเทศ และระดับชั้น</div></div>
+          <div class="menu-arrow">›</div>
+        </div>
+        <div class="menu-item" style="cursor:pointer;" onclick="show('print')">
+          <div class="menu-badge" style="background:#F0FDF4;">🖨️</div>
+          <div><div class="menu-item-title">พิมพ์รายงาน</div><div class="menu-item-desc">พิมพ์รายงานรวมหลายคน พร้อมลงนามผู้นิเทศ</div></div>
+          <div class="menu-arrow">›</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 02 RECORD ══ -->
+    <section id="sec-record" class="section">
+      <div class="page-heading">
+        <div class="heading-icon" style="background:#EEF2FF;">📋</div>
+        <div>
+          <h2>การบันทึกข้อมูลการนิเทศ</h2>
+          <p>กรอกแบบบันทึกหลังเสร็จสิ้นการนิเทศแต่ละครั้ง</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-bubble">1</div>
+          <div class="step-body">
+            <div class="step-title">กรอกข้อมูลพื้นฐาน</div>
+            <div class="step-desc">วันที่นิเทศ · ผู้นิเทศ · คำนำหน้า + ชื่อ-สกุลครู · กลุ่มสาระ · ระดับชั้น · ห้อง · รหัสวิชา · <strong>ครั้งที่</strong> (1 หรือ 2)</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">2</div>
+          <div class="step-body">
+            <div class="step-title">ตอบแบบประเมิน 16 ข้อ</div>
+            <div class="step-desc">เลือก <span class="tag" style="background:#D1FAE5;color:#065F46;">มี</span> หรือ <span class="tag" style="background:#FEE2E2;color:#991B1B;">ไม่มี</span> ในแต่ละข้อ รวม 16 คะแนน ครอบคลุม 5 ด้านหลัก</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">3</div>
+          <div class="step-body">
+            <div class="step-title">กรอกบันทึกเพิ่มเติม</div>
+            <div class="step-desc">จุดเด่นในการจัดกิจกรรม · จุดที่ควรพัฒนา · หมายเหตุ (ไม่บังคับ)</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">4</div>
+          <div class="step-body">
+            <div class="step-title">แนบรูปภาพ (ไม่บังคับ)</div>
+            <div class="step-desc">คลิกหรือ <strong>ลากวางรูป</strong> ลงในกล่อง รองรับ JPG / PNG ขนาดไม่เกิน 5MB ต่อรูป สูงสุด 3 รูป</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">5</div>
+          <div class="step-body">
+            <div class="step-title">กดปุ่ม "บันทึกข้อมูล"</div>
+            <div class="step-desc">รอจนมีข้อความแจ้งเตือนสีเขียว ยืนยันการบันทึกสำเร็จ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <span><strong>สำคัญ:</strong> รอให้รูปภาพอัพโหลดเสร็จสมบูรณ์ (แถบ progress เต็ม 100%) ก่อนกดบันทึก มิฉะนั้นรูปจะไม่ถูกบันทึกในระบบ</span>
+      </div>
+
+      <div class="s-divider"></div>
+
+      <div class="page-heading" style="margin-bottom:16px;">
+        <div class="heading-icon" style="background:#FFFBEB;">🎯</div>
+        <div>
+          <h2>แบบประเมิน 5 ด้าน</h2>
+          <p>รายละเอียดด้านที่ประเมินและจำนวนคะแนน</p>
+        </div>
+      </div>
+
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>ด้านการประเมิน</th>
+            <th style="text-align:center;">ข้อ</th>
+            <th style="text-align:center;">คะแนน</th>
+            <th>สาระสำคัญ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>จุดประสงค์/เป้าหมาย</strong></td>
+            <td style="text-align:center;">2</td>
+            <td style="text-align:center;"><span class="score-pill-sm" style="background:#EDE9FE;color:#5B21B6;">2</span></td>
+            <td style="font-size:12.5px;color:var(--muted);">ออกแบบหน่วย วางแผนสอดคล้องหลักสูตร Active Learning</td>
+          </tr>
+          <tr>
+            <td><strong>ด้านเนื้อหา</strong></td>
+            <td style="text-align:center;">3</td>
+            <td style="text-align:center;"><span class="score-pill-sm" style="background:#DBEAFE;color:#1E40AF;">3</span></td>
+            <td style="font-size:12.5px;color:var(--muted);">เนื้อหาสอดคล้อง ถูกต้อง เหมาะสมกับวัยผู้เรียน</td>
+          </tr>
+          <tr>
+            <td><strong>ขั้นนำ</strong></td>
+            <td style="text-align:center;">2</td>
+            <td style="text-align:center;"><span class="score-pill-sm" style="background:#FEF9C3;color:#92400E;">2</span></td>
+            <td style="font-size:12.5px;color:var(--muted);">ตรวจสอบความรู้เดิม เชื่อมโยงผู้เรียน</td>
+          </tr>
+          <tr>
+            <td><strong>ขั้นสอน</strong></td>
+            <td style="text-align:center;">4</td>
+            <td style="text-align:center;"><span class="score-pill-sm" style="background:#D1FAE5;color:#065F46;">4</span></td>
+            <td style="font-size:12.5px;color:var(--muted);">กิจกรรมหลากหลาย ปฏิสัมพันธ์ กระตุ้นการคิดวิจารณญาณ</td>
+          </tr>
+          <tr>
+            <td><strong>ขั้นสรุป</strong></td>
+            <td style="text-align:center;">1</td>
+            <td style="text-align:center;"><span class="score-pill-sm" style="background:#FCE7F3;color:#9D174D;">1</span></td>
+            <td style="font-size:12.5px;color:var(--muted);">ส่งเสริมทักษะการสื่อสาร สรุปผลการเรียนรู้</td>
+          </tr>
+          <tr>
+            <td><strong>ด้านสื่อการเรียนรู้</strong></td>
+            <td style="text-align:center;">2</td>
+            <td style="text-align:center;"><span class="score-pill-sm" style="background:#CFFAFE;color:#164E63;">2</span></td>
+            <td style="font-size:12.5px;color:var(--muted);">สื่อหลากหลาย ตอบสนองการเรียนรู้ที่แตกต่าง</td>
+          </tr>
+          <tr>
+            <td><strong>ด้านวัดและประเมินผล</strong></td>
+            <td style="text-align:center;">2</td>
+            <td style="text-align:center;"><span class="score-pill-sm" style="background:#FEE2E2;color:#991B1B;">2</span></td>
+            <td style="font-size:12.5px;color:var(--muted);">ผู้เรียนมีส่วนร่วม ประเมินตามสภาพจริง</td>
+          </tr>
+          <tr style="font-weight:700;">
+            <td style="color:var(--violet);">รวมทั้งหมด</td>
+            <td style="text-align:center;color:var(--violet);">16</td>
+            <td style="text-align:center;"><span class="score-pill-sm" style="background:var(--violet);color:#fff;">16</span></td>
+            <td style="font-size:12.5px;color:var(--violet);">100% = ดีเยี่ยม</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <span>การคำนวณ: <strong>(คะแนนที่ได้ ÷ 16) × 100</strong> = เปอร์เซ็นต์ที่ได้รับ</span>
+      </div>
+    </section>
+
+    <!-- ══ 03 DATA ══ -->
+    <section id="sec-data" class="section">
+      <div class="page-heading">
+        <div class="heading-icon" style="background:#FFF7ED;">📊</div>
+        <div>
+          <h2>การดูและจัดการข้อมูล</h2>
+          <p>ค้นหา กรอง ส่งออก และลบข้อมูลการนิเทศ</p>
+        </div>
+      </div>
+
+      <div class="menu-list" style="margin-bottom:24px;">
+        <div class="menu-item">
+          <div class="menu-badge" style="background:#EEF2FF;">🔍</div>
+          <div><div class="menu-item-title">ค้นหา</div><div class="menu-item-desc">พิมพ์ชื่อครูหรือรหัสวิชา — ระบบกรองแบบ Real-time ทันที</div></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-badge" style="background:#F0FDF4;">📂</div>
+          <div><div class="menu-item-title">กรองกลุ่มสาระ</div><div class="menu-item-desc">เลือกจาก Dropdown เพื่อดูเฉพาะกลุ่มสาระที่ต้องการ</div></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-badge" style="background:#FFFBEB;">📅</div>
+          <div><div class="menu-item-title">กรองช่วงวันที่</div><div class="menu-item-desc">ระบุวันเริ่มต้น-สิ้นสุด เพื่อดูเฉพาะช่วงเวลาที่ต้องการ</div></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-badge" style="background:#F0FDF4;">📥</div>
+          <div><div class="menu-item-title">ส่งออก CSV</div><div class="menu-item-desc">กดปุ่ม "ส่งออก CSV" ดาวน์โหลดข้อมูลตามเงื่อนไขที่กรองไว้</div></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-badge" style="background:#FEF2F2;">🗑️</div>
+          <div><div class="menu-item-title">ลบข้อมูล</div><div class="menu-item-desc">กดไอคอนถังขยะ → ยืนยันใน Dialog — ไม่สามารถกู้คืนได้</div></div>
+        </div>
+      </div>
+
+      <div class="page-heading" style="margin-bottom:16px;">
+        <div class="heading-icon" style="background:#EEF2FF;">🎖️</div>
+        <div>
+          <h2>เกณฑ์ระดับคุณภาพ</h2>
+          <p>แสดงในคอลัมน์ "ระดับ" ของตาราง</p>
+        </div>
+      </div>
+
+      <div class="quality-grid">
+        <div class="q-card q-excellent">
+          <div class="q-level">🟢 ดีเยี่ยม</div>
+          <div class="q-range">14–16 คะแนน  (≥87.5%)</div>
+          <div class="q-desc">ครูจัดการเรียนรู้ได้ตามมาตรฐานครบถ้วน</div>
+        </div>
+        <div class="q-card q-good">
+          <div class="q-level">🔵 ดี</div>
+          <div class="q-range">12–13 คะแนน  (75–87.4%)</div>
+          <div class="q-desc">จัดการเรียนรู้ได้ดี มีจุดพัฒนาเล็กน้อย</div>
+        </div>
+        <div class="q-card q-fair">
+          <div class="q-level">🟡 พอใช้</div>
+          <div class="q-range">10–11 คะแนน  (62.5–74.9%)</div>
+          <div class="q-desc">จัดได้บางส่วน ควรพัฒนาเพิ่มเติม</div>
+        </div>
+        <div class="q-card q-poor">
+          <div class="q-level">🔴 ควรปรับปรุง</div>
+          <div class="q-range">ต่ำกว่า 10 คะแนน  (&lt;62.5%)</div>
+          <div class="q-desc">ควรได้รับการนิเทศและพัฒนาอย่างเร่งด่วน</div>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <span>การลบข้อมูล <strong>ไม่สามารถกู้คืนได้</strong> — รูปภาพใน Google Drive จะยังคงอยู่แม้ลบข้อมูลแล้ว</span>
+      </div>
+    </section>
+
+    <!-- ══ 04 DETAIL ══ -->
+    <section id="sec-detail" class="section">
+      <div class="page-heading">
+        <div class="heading-icon" style="background:#FEF2F2;">🔍</div>
+        <div>
+          <h2>รายละเอียดการนิเทศรายบุคคล</h2>
+          <p>วิเคราะห์เชิงลึกพร้อมกราฟและรูปภาพ</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-bubble">1</div>
+          <div class="step-body">
+            <div class="step-title">เลือกรายการนิเทศ</div>
+            <div class="step-desc">เลือกจาก Dropdown โดยแสดงวันที่ รหัสวิชา และชื่อครู</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">2</div>
+          <div class="step-body">
+            <div class="step-title">ดูข้อมูลสรุป</div>
+            <div class="step-desc">วันที่ · คะแนน · เปอร์เซ็นต์ · ระดับคุณภาพ · ข้อมูลพื้นฐาน</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">3</div>
+          <div class="step-body">
+            <div class="step-title">ดูจุดเด่น / จุดพัฒนา</div>
+            <div class="step-desc">ข้อความที่ผู้นิเทศบันทึกไว้พร้อมหมายเหตุ (ถ้ามี)</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">4</div>
+          <div class="step-body">
+            <div class="step-title">ดูรูปภาพ</div>
+            <div class="step-desc">แสดงภาพประกอบสูงสุด 3 รูป กด <strong>"ดูขยาย"</strong> เพื่อเปิดภาพขนาดเต็ม</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">5</div>
+          <div class="step-body">
+            <div class="step-title">ดูกราฟวิเคราะห์</div>
+            <div class="step-desc"><strong>Bar Chart</strong> — ผลรายด้าน 7 ด้าน &nbsp;|&nbsp; <strong>Donut Chart</strong> — สัดส่วนขั้นกิจกรรม</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">6</div>
+          <div class="step-body">
+            <div class="step-title">พิมพ์รายงานรายบุคคล</div>
+            <div class="step-desc">กดปุ่ม <strong>"พิมพ์"</strong> ที่ปรากฏหลังเลือกรายการ เพื่อพิมพ์รายงานรายบุคคล</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 05 COMPARE ══ -->
+    <section id="sec-compare" class="section">
+      <div class="page-heading">
+        <div class="heading-icon" style="background:#F5F3FF;">⚖️</div>
+        <div>
+          <h2>การเปรียบเทียบผลการนิเทศ</h2>
+          <p>Radar Chart เปรียบเทียบ 7 ด้านพร้อมกัน</p>
+        </div>
+      </div>
+
+      <div class="feature-grid" style="margin-bottom:24px;">
+        <div class="feature-card" style="border-color:rgba(91,63,212,.2);">
+          <div class="feature-icon" style="background:#EDE9FE;">⚡</div>
+          <h4>เปรียบเทียบอัตโนมัติ</h4>
+          <p>เลือกชื่อครู → กด "โหลดข้อมูล" — ระบบดึงข้อมูลครั้งที่ 1 vs ครั้งที่ 2 ให้อัตโนมัติ</p>
+        </div>
+        <div class="feature-card" style="border-color:rgba(217,119,6,.2);">
+          <div class="feature-icon" style="background:#FEF3C7;">🔧</div>
+          <h4>เปรียบเทียบแบบเลือกเอง</h4>
+          <p>เลือกชุดที่ 1 และชุดที่ 2 จาก Dropdown ได้อิสระ → กด "เปรียบเทียบ"</p>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <span>ฟีเจอร์อัตโนมัติจะทำงานได้เมื่อมีข้อมูลนิเทศของครูคนเดียวกัน <strong>ครบทั้งครั้งที่ 1 และครั้งที่ 2</strong> ในระบบ</span>
+      </div>
+    </section>
+
+    <!-- ══ 06 SUMMARY ══ -->
+    <section id="sec-summary" class="section">
+      <div class="page-heading">
+        <div class="heading-icon" style="background:#ECFEFF;">📈</div>
+        <div>
+          <h2>สรุปภาพรวมการนิเทศ</h2>
+          <p>สถิติและกราฟภาพรวม อัพเดทอัตโนมัติ</p>
+        </div>
+      </div>
+
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="menu-badge" style="background:#F0FDF4;">🃏</div>
+          <div><div class="menu-item-title">การ์ดระดับคุณภาพ 4 ใบ</div><div class="menu-item-desc">นับจำนวนครั้งที่ได้แต่ละระดับ ดีเยี่ยม / ดี / พอใช้ / ควรปรับปรุง</div></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-badge" style="background:#EFF6FF;">📊</div>
+          <div><div class="menu-item-title">คะแนนเฉลี่ยรายด้าน (Bar Chart)</div><div class="menu-item-desc">เปรียบเทียบค่าเฉลี่ยของทั้ง 7 ด้านการประเมิน</div></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-badge" style="background:#F0FDF4;">🥧</div>
+          <div><div class="menu-item-title">คะแนนเฉลี่ยตามผู้นิเทศ (Donut Chart)</div><div class="menu-item-desc">สัดส่วนคะแนนแยกตามผู้นิเทศแต่ละคน</div></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-badge" style="background:#F5F3FF;">🏫</div>
+          <div><div class="menu-item-title">คะแนนเฉลี่ยตามระดับชั้น</div><div class="menu-item-desc">เปรียบเทียบค่าเฉลี่ยของ ม.1 – ม.6</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 07 PRINT ══ -->
+    <section id="sec-print" class="section">
+      <div class="page-heading">
+        <div class="heading-icon" style="background:#F0FDF4;">🖨️</div>
+        <div>
+          <h2>การพิมพ์รายงานการนิเทศ</h2>
+          <p>สร้างรายงานรวมหลายคนในครั้งเดียว</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-bubble">1</div>
+          <div class="step-body">
+            <div class="step-title">ตั้งค่าตัวกรอง</div>
+            <div class="step-desc">ชื่อครู · กลุ่มสาระ · ระดับชั้น · ผู้นิเทศ · ช่วงวันที่ (ไม่ต้องกรองทุกช่อง)</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">2</div>
+          <div class="step-body">
+            <div class="step-title">เลือกพิมพ์ภาพ</div>
+            <div class="step-desc">ติ๊กช่อง <strong>"พิมพ์รูปภาพประกอบ"</strong> หากต้องการให้รูปภาพแสดงในรายงาน</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">3</div>
+          <div class="step-body">
+            <div class="step-title">กด "แสดงตัวอย่าง"</div>
+            <div class="step-desc">ตรวจสอบความถูกต้องของข้อมูลในตัวอย่างก่อนพิมพ์จริง</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-bubble">4</div>
+          <div class="step-body">
+            <div class="step-title">กด "พิมพ์ / บันทึก PDF"</div>
+            <div class="step-desc">เลือกเครื่องพิมพ์ หรือเลือก <strong>"Save as PDF"</strong> เพื่อบันทึกเป็นไฟล์</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-heading" style="margin-bottom:16px;">
+        <div class="heading-icon" style="background:#F5F3FF;">📄</div>
+        <div><h2>รูปแบบรายงาน</h2><p>สิ่งที่ปรากฏในรายงานที่พิมพ์ออกมา</p></div>
+      </div>
+
+      <div style="display:grid;gap:8px;margin-bottom:20px;">
+        <div style="padding:10px 14px;background:#F0FDF4;border-radius:9px;border-left:3px solid #10B981;font-size:13.5px;color:#065F46;">✅ ข้อมูลครูแยกหน้าทีละคน (Page Break)</div>
+        <div style="padding:10px 14px;background:#F0FDF4;border-radius:9px;border-left:3px solid #10B981;font-size:13.5px;color:#065F46;">✅ ผลการนิเทศแยกครั้งที่ 1 และ 2 พร้อมจุดเด่น / จุดพัฒนา</div>
+        <div style="padding:10px 14px;background:#F0FDF4;border-radius:9px;border-left:3px solid #10B981;font-size:13.5px;color:#065F46;">✅ คะแนนรายด้านทั้ง 7 ด้านพร้อมคะแนนเต็มแต่ละด้าน</div>
+        <div style="padding:10px 14px;background:#F0FDF4;border-radius:9px;border-left:3px solid #10B981;font-size:13.5px;color:#065F46;">✅ ช่องลงนามผู้นิเทศและผู้รับรองในเอกสาร</div>
+        <div style="padding:10px 14px;background:#F0FDF4;border-radius:9px;border-left:3px solid #10B981;font-size:13.5px;color:#065F46;">✅ ภาคเรียนคำนวณอัตโนมัติจากวันที่ปัจจุบัน</div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <span>ตั้งค่ากระดาษเป็น <strong>A4 แนวตั้ง</strong> ใน Dialog การพิมพ์ เพื่อให้รายงานแสดงผลได้สวยงาม</span>
+      </div>
+    </section>
+
+    <!-- ══ 08 FAQ ══ -->
+    <section id="sec-faq" class="section">
+      <div class="page-heading">
+        <div class="heading-icon" style="background:#FEF9C3;">❓</div>
+        <div>
+          <h2>คำถามที่พบบ่อย</h2>
+          <p>คลิกคำถามเพื่อดูคำตอบ</p>
+        </div>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            รูปภาพอัพโหลดไม่สำเร็จ ทำอย่างไร?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <ul>
+              <li>ตรวจสอบว่าไฟล์มีขนาด<strong>ไม่เกิน 5MB</strong> ต่อรูป</li>
+              <li>ใช้นามสกุล <strong>JPG, PNG หรือ GIF</strong> เท่านั้น</li>
+              <li>ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</li>
+              <li>รีเฟรชหน้าเว็บแล้วลองอัพโหลดใหม่อีกครั้ง</li>
+            </ul>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            ข้อมูลไม่แสดงในตาราง ทำอย่างไร?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <ul>
+              <li>กดปุ่ม <strong>"รีเฟรช"</strong> ในหน้า "ข้อมูลการนิเทศ"</li>
+              <li>ตรวจสอบว่าไม่ได้ตั้งตัวกรองที่เข้มเกินไป</li>
+              <li>กดปุ่ม <strong>"ล้างตัวกรอง"</strong> แล้วลองใหม่</li>
+            </ul>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            กราฟไม่แสดงผล ทำอย่างไร?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <ul>
+              <li>คลิกที่เมนูนั้นใหม่อีกครั้งเพื่อ Reload กราฟ</li>
+              <li>กราฟจะแสดงเมื่อ<strong>มีข้อมูลในระบบ</strong>เท่านั้น</li>
+            </ul>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            บันทึกข้อมูลผิด ต้องการแก้ไข ทำอย่างไร?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            ปัจจุบันระบบยังไม่รองรับการแก้ไขข้อมูลหลังบันทึก<br>
+            <strong>วิธีแก้:</strong> ลบข้อมูลเดิมออก แล้วกรอกข้อมูลใหม่ให้ถูกต้อง
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            ต้องการเพิ่มผู้นิเทศหรือกลุ่มสาระใหม่ ทำอย่างไร?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            ต้องให้ผู้ดูแลระบบแก้ไขโค้ด <code style="background:#F3F4F6;padding:1px 6px;border-radius:4px;font-size:12px;">&lt;option&gt;</code> ใน index.html<br>
+            กรุณาติดต่อผู้พัฒนาระบบเพื่อดำเนินการ
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            ระบบเปรียบเทียบอัตโนมัติทำงานไม่ได้?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            ตรวจสอบว่ามีข้อมูลนิเทศของครูคนนั้น<strong>ครบทั้งครั้งที่ 1 และครั้งที่ 2</strong> ในระบบ<br>
+            หากมีเพียงครั้งเดียว ให้ใช้การเปรียบเทียบแบบเลือกเองแทน
+          </div>
+        </div>
+      </div>
+
+      <div class="s-divider"></div>
+      <div class="callout success">
+        <span class="callout-icon">✅</span>
+        <span>พัฒนาด้วย <strong>Google Apps Script</strong> ทำงานบน Google Sheets + Google Drive ไม่ต้องติดตั้งซอฟต์แวร์เพิ่มเติม</span>
+      </div>
+    </section>
+
+  </div><!-- #content -->
+</div><!-- #main -->
+
+<script>
+const SECTIONS = ['home','record','data','detail','compare','summary','print','faq'];
+const LABELS = {
+  home:'ภาพรวมระบบ', record:'บันทึกการนิเทศ', data:'ดูข้อมูลนิเทศ',
+  detail:'รายละเอียดรายบุคคล', compare:'เปรียบเทียบ',
+  summary:'สรุปภาพรวม', print:'พิมพ์รายงาน', faq:'คำถามที่พบบ่อย'
+};
+
+function show(id) {
+  SECTIONS.forEach(s => {
+    document.getElementById('sec-'+s).classList.toggle('active', s === id);
+  });
+  document.querySelectorAll('.nav-link').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.querySelectorAll('.nav-link').forEach(btn => {
+    if (btn.getAttribute('onclick') === `show('${id}')`) btn.classList.add('active');
+  });
+  document.getElementById('topbar-label').textContent = LABELS[id] || id;
+  document.getElementById('content').scrollTop = 0;
+  window.scrollTo(0,0);
+  closeSidebar();
+}
+
+function toggleFaq(btn) {
+  const isOpen = btn.classList.contains('open');
+  document.querySelectorAll('.faq-q').forEach(b => {
+    b.classList.remove('open');
+    b.nextElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    btn.classList.add('open');
+    btn.nextElementSibling.classList.add('open');
+  }
+}
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+</script>
 </body>
 </html>
